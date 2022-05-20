@@ -1,0 +1,38 @@
+@charset "ISO-8859-1";
+
+body {
+	color:white;
+}
+.footer_margin {
+	position: fixed;
+	bottom: 0;
+	background-color: black;
+	color: white;
+	padding: 10px 30px;
+	margin-top: 30px;
+	width: 100%;
+}
+
+.top-nav-centered {
+	position: relative;
+}
+
+.container8 {
+	position: fixed;
+	top: 0;
+	background-color: black;
+	color: white;
+	padding: 10px 30px;
+	width: 100%;
+	text-align: center;
+}
+
+.content-center {
+	float: none;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	width: auto;
+	color: white;
+}
