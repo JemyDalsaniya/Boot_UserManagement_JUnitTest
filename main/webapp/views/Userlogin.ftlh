@@ -11,7 +11,7 @@
 </head>
 <body class="bg-info bg_custom_color">
 	<div class="container">
-		<form action="userlogin" method="post" modelAttribute ="loginForm"class="px-3" id="login_form">
+		<form action="Userlogin" method="post" modelAttribute ="loginForm"class="px-3" id="login_form">
 			<!-- Login Form Start -->
 			<div class="row justify-content-center wrapper" id="login-box">
 				<div class="col-lg-10 my-auto myShadow">
@@ -25,11 +25,15 @@
 									<span class="input-group-text rounded-0"> <i
 										class="far fa-envelope fa-lg fa-fw"></i></span>
 								</div>
+															
 								<input type="text" id="mail" name="userEmail"
 									class="form-control rounded-0" placeholder="E-Mail" />
 
 							</div>
 							<span id="email_error"></span>
+							
+							
+							
 							<div class="input-group input-group-lg form-group">
 								<div class="input-group-prepend">
 									<span class="input-group-text rounded-0"><i

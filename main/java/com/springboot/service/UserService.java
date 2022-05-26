@@ -6,24 +6,62 @@ import com.springboot.model.User;
 
 public interface UserService {
 
+	/**
+	 * 
+	 * @param user
+	 */
 	void userRegister(User user);
 
+	/**
+	 * 
+	 * @param user
+	 * @return
+	 */
 	User userLogin(User user);
 
+	/**
+	 * 
+	 * @return
+	 */
 	List<User> allUsers();
 
+	/**
+	 * 
+	 * @param id
+	 */
 	void deleteUser(int id);
 
+	/**
+	 * 
+	 * @param id
+	 * @return
+	 */
 	User userIdDetail(int id);
 
-	void updateUser(User user);
-
+	/**
+	 * 
+	 * @param user
+	 */
 	void updatePassword(User user);
 
+	/**
+	 * 
+	 * @param email
+	 * @return
+	 */
 	boolean checkMail(String email);
 
+	/**
+	 * 
+	 * @param id
+	 */
 	void changeRole(int id);
 
-	List<User> adminDetail(User user);
+	/**
+	 * 
+	 * @param user
+	 * @return
+	 */
+	List<User> adminDetail();
 
 }

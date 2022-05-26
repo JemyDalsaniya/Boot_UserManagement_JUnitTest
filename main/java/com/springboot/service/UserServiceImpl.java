@@ -1,10 +1,12 @@
 package com.springboot.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.springboot.dao.AddressRepository;
 import com.springboot.dao.UserRepository;
 import com.springboot.model.Address;
 import com.springboot.model.User;
@@ -15,65 +17,124 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	UserRepository userRepository;
 
+	@Autowired
+	AddressRepository addressRepository;
+
 	@Override
 	public void userRegister(User user) {
-		System.out.println("inside service" + user.getAddress());
-		for (Address address : user.getAddress()) {
-			address.setUser(user);
+		try {
+			List<Integer> addressIdList = new ArrayList<Integer>();
+			for (Address address : user.getAddress()) {
+				address.setUser(user);
+				System.out.println("address list" + address);
+			}
+			if (user.getUserId() != 0) {
+				System.out.println("USE OBJ" + user);
+				int rem = 0;
+				System.out.println(user.getAddress().size());
+				while (user.getAddress().size() != rem) {
+					String cityCheck = user.getAddress().get(rem).getAddCity();
+					System.out.println("city check" + cityCheck);
+					if (cityCheck != null) {
+						rem++;
+					} else {
+						user.getAddress().remove(rem);
+					}
+				}
+				for (Address address : user.getAddress()) {
+					addressIdList.add(address.getAddId());
+				}
+				System.out.println("AddressIdList" + addressIdList);
+				addressRepository.deleteByAddIdNotInAndUser(addressIdList, user);
+
+			}
+			userRepository.save(user);
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-		userRepository.save(user);
-		System.out.println("after save" + user.getAddress());
 	}
 
 	@Override
 	public User userLogin(User user) {
-		return userRepository.findByUserEmailAndUserPassword(user.getUserEmail(), user.getUserPassword());
+		try {
+			return userRepository.findByUserEmailAndUserPassword(user.getUserEmail(), user.getUserPassword());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return user;
 	}
 
 	@Override
 	public List<User> allUsers() {
-		return userRepository.findAll();
+		try {
+			return userRepository.findByUserStatus(false);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	@Override
 	public void deleteUser(int id) {
-		userRepository.deleteById(id);
+		try {
+			userRepository.deleteById(id);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 	}
 
 	@Override
 	public User userIdDetail(int id) {
-		return userRepository.findByUserId(id);
-	}
-
-	@Override
-	public void updateUser(User user) {
-		userRepository.save(user);
+		try {
+			return userRepository.findByUserId(id);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	@Override
 	public void updatePassword(User user) {
-		userRepository.updatePassword(user.getUserEmail(), user.getUserPassword());
-	}
-
-	@Override
-	public boolean checkMail(String email) {
-		List<User> list = userRepository.findByUserEmail(email);
-		System.out.println("list in servivcve" + list);
-		if (list != null) {
-			return true;
-		} else {
-			return false;
+		try {
+			userRepository.updatePassword(user.getUserEmail(), user.getUserPassword());
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 
 	@Override
-	public void changeRole(int id) {
-		userRepository.changeRole(id);
+	public boolean checkMail(String email) {
+		try {
+			List<User> list = userRepository.findByUserEmail(email);
+			if (!list.isEmpty()) {
+				return true;
+			} else {
+				return false;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return false;
 	}
 
 	@Override
-	public List<User> adminDetail(User user) {
-		return userRepository.findByUserStatus(user.getUserStatus());
+	public void changeRole(int id) {
+		try {
+			userRepository.changeRole(id);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public List<User> adminDetail() {
+		try {
+			return userRepository.findByUserStatus(true);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 }

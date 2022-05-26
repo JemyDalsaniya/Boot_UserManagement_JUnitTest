@@ -27,67 +27,58 @@ public class UserController {
 	@Autowired
 	UserService service;
 
-	@RequestMapping(value = { "/", "userlogin" })
+	@RequestMapping(value = { "/", "/userlogin" })
 	public String login() {
-		System.out.println("inside login");
 		return "Userlogin";
 	}
 
 	@RequestMapping(value = { "/register", "/addUser" })
-	public String register(Model model, HttpSession session) {
-		System.out.println("inside open register page");
-
+	public String register(HttpSession session, Model model) {
 		session.removeAttribute("userDetails");
-		session.removeAttribute("addressList");
 		session.removeAttribute("adminDetails");
+		session.removeAttribute("addressList");
 		return "UserRegister";
 	}
 
-	@PostMapping("/userlogin")
+	@PostMapping("/Userlogin")
 	public String userlogin(Model model, @ModelAttribute("loginForm") User user, HttpSession session) {
-		System.out.println("inside login");
+
 		User userobj = service.userLogin(user);
-		userobj.getUserStatus();
-		List<Address> addressList = userobj.getAddress();
-		System.out.println("object" + userobj);
+		System.out.println(user);
 		if (userobj != null) {
 			if (userobj.getUserStatus()) {
-				List<User> adminDetailList = service.adminDetail(user);
-				System.out.println("adminDetail list" + adminDetailList);
+				List<User> adminDetailList = service.adminDetail();
 				session.setAttribute("adminDetails", adminDetailList);
-				session.setAttribute("addressList", addressList);
 				return "AdminHomePage";
 			} else {
-				model.addAttribute("userDetails", userobj);
-				model.addAttribute("addressList", addressList);
+				session.setAttribute("userDetails", userobj);
 				return "UserHomePage";
 			}
 		}
-		return "Userlogin";
+		return null;
 	}
 
 	@RequestMapping("/view")
 	public String viewUser(Model model, HttpSession session) {
 		List<User> allusers = service.allUsers();
-		if (allusers.get(0).getUserStatus()) {
-			allusers.remove(allusers.remove(0));
-		}
 		model.addAttribute("allusers", allusers);
 		return "ViewUser";
 	}
 
-	@PostMapping(value = { "/UserRegister" })
-	public String registration(Model model, @ModelAttribute("registerForm") User user,
+	@PostMapping(value = { "/UserRegister", "/addUser" })
+	public String registration(Model model, @ModelAttribute("registerForm") User user, HttpSession session,
 
-			@RequestParam(value = "name", required = false) String urlValue) {
-
-		System.out.println("url value is" + urlValue);
-		System.out.println("inside user register");
-		System.out.println("address" + user.getAddress());
+			@RequestParam(value = "urlValue", required = false) String urlValue) {
 
 		service.userRegister(user);
 
 		if (urlValue != null) {
+			List<User> adminDetailList = service.adminDetail();
+			System.out.println("admin detail list" + adminDetailList);
+			System.out.println("urlValue" + urlValue);
+			List<Address> addressList = adminDetailList.get(0).getAddress();
+			session.setAttribute("adminDetails", adminDetailList);
+			session.setAttribute("addressList", addressList);
 			return "AdminHomePage";
 		} else {
 			return "Userlogin";
@@ -100,34 +91,29 @@ public class UserController {
 		response.getWriter().write("in success");
 	}
 
-	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/editProfile", method = RequestMethod.GET)
 	public String editUser(User user, HttpSession session, Model model,
 			@RequestParam(value = "id", required = false) String userId,
-			@RequestParam(value = "name", required = false) String valueURL) {
+			@RequestParam(value = "urlValue", required = false) String urlValue) {
 
-		System.out.println("name is" + valueURL);
-		System.out.println("inside edit profile");
-		System.out.println("id is" + userId);
-
-		if (valueURL.equals("admin")) {
+		if (urlValue.equals("admin")) {
 			session.removeAttribute("userDetails");
-			session.removeAttribute("addressList");
 			user.setUserStatus(true);
-			List<User> adminDetailList = service.adminDetail(user);
+			List<User> adminDetailList = service.adminDetail();
+			System.out.println("admin detail list" + adminDetailList);
 			List<Address> addressList = adminDetailList.get(0).getAddress();
 			session.setAttribute("adminDetails", adminDetailList);
 			session.setAttribute("addressList", addressList);
-		} else if (valueURL.equals("userEdit") || valueURL.equals("adminEdit")) {
-			System.out.println("inside else part");
-			session.removeAttribute("userDetails");
+			byte[] adminImage = adminDetailList.get(0).getImage();
+			session.setAttribute("adminImage", adminImage);
+
+		} else if (urlValue.equals("userEdit") || urlValue.equals("adminEdit")) {
+			session.removeAttribute("adminDetails");
 			User userProfile = service.userIdDetail(Integer.parseInt(userId));
 			byte[] byteimage = userProfile.getImage();
 			session.setAttribute("userImage", byteimage);
-			List<Address> addressList = userProfile.getAddress();
 			System.out.println("user profile" + userProfile);
 			session.setAttribute("userDetails", userProfile);
-			session.setAttribute("addressList", addressList);
 		}
 
 		return "UserRegister";
@@ -135,20 +121,41 @@ public class UserController {
 
 	@PostMapping(value = "/UserEdit")
 	public String updateUser(Model model, @ModelAttribute("registerForm") User user, HttpSession session,
-			@RequestParam("file") MultipartFile image,
-			@RequestParam(value = "name", required = false) String urlValue) {
+			@RequestParam("file") MultipartFile file,
+			@RequestParam(value = "urlValue", required = false) String urlValue) {
 
-		if (image.isEmpty() && (urlValue.equals("userEdit"))) {
+		if (file.isEmpty() && (urlValue.equals("userEdit") || urlValue.equals("adminEdit"))) {
 			byte[] imagebytes = (byte[]) session.getAttribute("userImage");
 			user.setImage(imagebytes);
+		} else if (file.isEmpty()) {
+			byte[] adminImagebytes = (byte[]) session.getAttribute("adminImage");
+			user.setImage(adminImagebytes);
 		}
-		service.updateUser(user);
+		if (urlValue.equals("admin")) {
+			user.setUserStatus(true);
+		}
+		service.userRegister(user);
+
 		if (urlValue.equals("userEdit")) {
+			session.removeAttribute("adminDetails");
 			User userProfile = service.userIdDetail(user.getUserId());
-			model.addAttribute("userDetails", userProfile);
+			session.setAttribute("userDetails", userProfile);
 			return "UserHomePage";
+		} else if (urlValue.equals("admin")) {
+			session.removeAttribute("userDetails");
+			List<User> adminDetailList = service.adminDetail();
+			List<Address> addressList = adminDetailList.get(0).getAddress();
+			session.setAttribute("adminDetails", adminDetailList);
+			session.setAttribute("addressList", addressList);
+			return "AdminHomePage";
+
+			// } else if (urlValue.equals("adminEdit")) {
+		} else {
+			List<User> allusers = service.allUsers();
+			session.setAttribute("allusers", allusers);
+			return "ViewUser";
+
 		}
-		return null;
 
 	}
 
@@ -157,9 +164,9 @@ public class UserController {
 		boolean flag = service.checkMail(email);
 		System.out.println("flag value" + flag);
 		if (flag) {
-			response.getWriter().write("true");
+			response.getWriter().write("available");
 		} else {
-			response.getWriter().write("false");
+			response.getWriter().write("not available");
 		}
 	}
 
@@ -169,19 +176,19 @@ public class UserController {
 	}
 
 	@RequestMapping("/adminHome")
-	public String adminHome() {
+	public String adminHome(User user, HttpSession session) {
+		List<User> adminDetailList = service.adminDetail();
+		session.setAttribute("adminDetails", adminDetailList);
 		return "AdminHomePage";
 	}
 
-	@RequestMapping("forgetPassword")
+	@RequestMapping("/forgetPassword")
 	public String forgetPwd() {
 		return "ForgetPassword";
 	}
 
-	@PostMapping("ForgetPassword")
+	@PostMapping("/ForgetPassword")
 	public String forgetPassword(Model model, @ModelAttribute("forgetPwd") User user) {
-		System.out.println("inside forget pwd");
-
 		service.updatePassword(user);
 		return "Userlogin";
 	}

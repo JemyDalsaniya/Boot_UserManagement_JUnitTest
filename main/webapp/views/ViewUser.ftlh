@@ -122,15 +122,15 @@ input:checked+.slider:before {
 				
 				<#list allusers as item>	
 						<tr>
-						<td>${item.userName}</td>
-						<td>${item.userEmail}</td>
-						<td>${item.userContact}</td>
-						<td>${item.userGender}</td>
-						<td>${item.userHobby}</td>
-						<td><img src="data:image/jpg;base64,${item.base64Image}"
+						<td>${item.userName!""}</td>
+						<td>${item.userEmail!""}</td>
+						<td>${item.userContact!""}</td>
+						<td>${item.userGender!""}</td>
+						<td>${item.userHobby!""}</td>
+						<td><img src="data:image/jpg;base64,${item.base64Image!""}"
 							width="100" height="100"></td>
 						<td>${item.userDOB}</td>
-						<td><a href="editProfile?user=adminEdit&id=${item.userId}"><i
+						<td><a href="editProfile?urlValue=adminEdit&id=${item.userId}"><i
 								class="fa fa-pencil-square-o fa-lg " aria-hidden="true"></i></a>
 							&nbsp;&nbsp;<a id="${item.userId}" class="delete"><i
 								class="fa fa-trash fa-lg " aria-hidden="true"></i></a></td>

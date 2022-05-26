@@ -9,7 +9,7 @@ $(document).ready(function() {
 	$("#check_error").hide();
 	$("#image_error").hide();
 	$("#pincode_error").hide();
-	$("#landmark_error").hide();
+	//$("#landmark_error").hide();
 	$("#street_error").hide();
 	$("#city_error").hide();
 	$("#state_error").hide();
@@ -24,7 +24,7 @@ $(document).ready(function() {
 	var check_error = false;
 	var image_error = false;
 	var pincode_error = false;
-	var landmark_error = false;
+	//var landmark_error = false;
 	var street_error = false;
 	var city_error = false;
 	var state_error = false;
@@ -175,7 +175,7 @@ $(document).ready(function() {
 		});
 
 		//landmark
-		$(selector + " #landmark").focusout(function() {
+		/*$(selector + " #landmark").focusout(function() {
 			$(selector + " #landmark_error").hide();
 			$(selector + " #landmark").css("border-bottom", "1px solid #ccc");
 			check_landmark(selector);
@@ -186,7 +186,7 @@ $(document).ready(function() {
 		});
 		$(selector + " #landmark").focus(function() {
 			check_landmark(selector);
-		});
+		});*/
 
 		//city
 		$(selector + " #city").change(function() {
@@ -215,7 +215,7 @@ $(document).ready(function() {
 			var selector = `.container-item[data-index="${i}"]`;
 
 			check_street(selector);
-			check_landmark(selector);
+			//check_landmark(selector);
 			check_pincode(selector);
 			check_city(selector);
 			check_state(selector);
@@ -242,7 +242,7 @@ $(document).ready(function() {
 		}
 	}
 
-	function check_landmark(selector) {
+	/*function check_landmark(selector) {
 
 		var landmark = $(selector + " #landmark").val();
 		if (landmark.length == 0) {
@@ -254,7 +254,7 @@ $(document).ready(function() {
 			$(selector + " #landmark_error").hide();
 			$(selector + " #landmark").css("border-bottom", "4px solid #34F458");
 		}
-	}
+	}*/
 	function check_street(selector) {
 		var street = $(selector + " #street").val();
 		if (street.length == 0) {
@@ -465,7 +465,7 @@ $(document).ready(function() {
 		check_error = false;
 		image_error = false;
 		pincode_error = false;
-		landmark_error = false;
+		//landmark_error = false;
 		street_error = false;
 		city_error = false;
 		state_error = false;
@@ -487,7 +487,7 @@ $(document).ready(function() {
 
 		if (name_error === false && email_error === false && password_error === false && confirm_password_error === false && contact_error === false &&
 			radio_error === false && check_error === false &&
-			image_error === false && pincode_error === false && landmark_error === false && street_error === false && state_error === false && city_error === false && dob_error === false && result_error === true ) {
+			image_error === false && pincode_error === false && street_error === false && state_error === false && city_error === false && dob_error === false && result_error === true ) {
 			alert("Registration Successfull");
 			return true;
 		}else {

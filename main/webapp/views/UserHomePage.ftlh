@@ -29,11 +29,8 @@ td, h2 {
 </head>
 
 <body class="bg_custom_color">
-<#if userDetails??>
- 
- 				
- 									<#assign id="${userDetails.userId}">
- 									${id}
+								<#if userDetails??>
+   									<#assign id="${userDetails.userId}">
 									<#assign fullname="${userDetails.userName}">
 									<#assign email="${userDetails.userEmail}">
 									<#assign contact="${userDetails.userContact}">
@@ -41,7 +38,8 @@ td, h2 {
 							 		<#assign hobby="${userDetails.userHobby}">
 							 		<#assign image="${userDetails.base64Image}">
 							 		<#assign dob ="${userDetails.userDOB}">
-									</#if>
+								</#if>
+								
 
  	<nav class="navbar navbar-inverse">
 		<div class="container-fluid">
@@ -58,7 +56,7 @@ td, h2 {
 			<div class="collapse navbar-collapse"
 				id="bs-example-navbar-collapse-1">
 				<ul class="nav navbar-nav">
-					<li><a href="editProfile?id=${id!""}&name=userEdit">Edit Profile<span
+					<li><a href="editProfile?id=${id!""}&urlValue=userEdit">Edit Profile<span
 							class="sr-only">(current)</span></a>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
@@ -102,17 +100,19 @@ td, h2 {
 					<td>Date of Birth</td>
 					<td>${dob!""}</td>
 				</tr>
-				<#list addressList as address>
+				<#if userDetails??>
+				<#list userDetails.address as address>
 					<tr>
 						<td>Address</td>
 						<td>Address ${address?index+1}<br/><br/>
-						Street : ${address.addStreet}  <br/>
-							Pincode : ${address.addPincode} <br/>
-							City : ${address.addCity} <br/>
-							State: ${address.addState}
+						Street : ${address.addStreet!''}  <br/>
+							Pincode : ${address.addPincode!''} <br/>
+							City : ${address.addCity!''} <br/>
+							State: ${address.addState!''}
 						</td>
 					</tr>
 					</#list>
+					</#if>
 					
 </table>
 	</div>

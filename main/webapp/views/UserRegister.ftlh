@@ -73,6 +73,7 @@
 					${id}
 					<input type="hidden" name="userId" value="${id!""}">
 					</#if>
+					
 					<#if adminDetails??>
 					${adminId}
 					<input type="hidden" name="userId" value="${adminId!""}">
@@ -204,78 +205,150 @@
 				<div class="customer-form">
 					<div class="card"></div>
 					
-							<#if addressList??>
+						
+		<#if userDetails??>	
+		
+		<div id="main-container">
+						<#list userDetails.address![] as addr>
+						<div class="panel card container-item mb-2">
+							<div class="panel-body">
+								<div class="panel-body pl-2 pr-2 pb-2">
 								
-							<div id="main-container">
 								
-								<#list addressList as addr>
-								<div class="panel card container-item">
-									<div class="panel-body">
-										<div class="panel-body">
-										<input type="hidden" name="addressId[]" id="addressId[]"
-															value="${addr.addId!""}">
-											<div class="row">
-												<div class="col-sm-4">
-													<div class="form-group">
-														<label class="control-label" for="address_line_one_0">Street</label>
-														<input type="text" id="street" class="form-control"
-															name="address[${addr?index}].addStreet" maxlength="255" placeholder="Street" value="${addr.addStreet!""}"> <span
-															id="street_error"></span>
-													</div>
-												</div>
-												<div class="col-sm-4">
-													<div class="form-group">
-														<label class="control-label" for="address_line_two_0">Landmark</label>
-														<input type="text" id="landmark" class="form-control"
-															name="address[${addr?index}].addLandmark" maxlength="255" placeholder="Landmark" value="${addr.addLandmark!""}"> <span
-															id="landmark_error"></span>
-													</div>
-												</div>
-												<div class="col-sm-4">
-													<div class="form-group">
-														<label class="control-label" for="address_line_two_0">Pincode</label>
-														<input type="text" id="pincode" class="form-control"
-															name="address[${addr?index}].addPincode" maxlength="255" placeholder="Pincode" value="${addr.addPincode!""}"> <span
-															id="pincode_error"></span>
+
+									<input type="hidden" name="address[${addr?index}].addId"  id="addId${addr?index}" value="${addr.addId!''}">
+										
+									<div class="flex flex-row gap-8">
+										<div class="col-sm-6">
+											<label class="block mt-2 text-md font-semibold">Street</label>
+													<input type="text" id="street" 
+														value="${addr.addStreet!''}" name="address[${addr?index}].addStreet"
+															class="form-control" />
+													<span id="street_error"></span> 
+										</div>
+										<div class="col-sm-6">
+											<label class="block mt-2 mt-4 text-md font-semibold">Pincode</label>
+													 <input type="number" id="pincode${addr?index}"
+												value="${addr.addPincode!''}"  name="address[${addr?index}].addPincode"
+												class="form-control" />
+												<span id="pincode_error"></span> 										
+										</div>
+									</div>
+										
+										<div class="flex flex-row gap-8">
+										<div class="w-full">
+											<label
+												class="block mt-2 text-gray-700 dark:text-gray-400 font-semibold col-sm-6">City
+												<select id="city${addr?index}" name="address[${addr?index}].addCity"
+												class="form-control" style="height:auto">
+													<option value="Select your city">Select your city</option>
+													<option value="Ahmedabad">Ahmedabad</option>
+													<option value="Rajkot">Rajkot</option>
+													<option value="Surat">Surat</option>
+													<option value="Junagadh">Junagadh</option>
+													<option value="Gandhinagar">Gandhinagar</option>
+											</select> <span id="city_error"></span>
+											</label>
+										</div>
+										
+										<div class="w-full">
+											<label
+												class="block mt-2 text-gray-700 dark:text-gray-400 font-semibold col-sm-6">State
+												<select id="state${addr?index}" name="address[${addr?index}].addState"
+												class="form-control" style="height:auto">
+													<option value="Select your state">Select your state</option>
+													<option value="Gujarat">Gujarat</option>
+													<option value="Maharashtra">Maharashtra</option>
+													<option value="Rajsthan">Rajsthan</option>
+													<option value="Goa">Goa</option>
+													<option value="Punjab">Punjab</option>
+											</select> <span id="state_error"></span>
+											</label>
+										</div>
+									</div>
+
+							
+										<div class="row">
+												<div class="col-sm-12">
+													<div>
+														<a href="javascript:void(0)"
+															class="remove-item btn btn-sm btn-danger remove-social-media">Remove</a>
 													</div>
 												</div>
 											</div>
-											<div class="row">
+										</div>
+									</div>
+								</div>
+								</#list>
+							</div>
+							<div>
+								<a class="btn btn-success btn-sm" id="add-more"
+									href="javascript:;" role="button"><i class="fa fa-plus"></i>
+									Add address</a>
+							</div>
+						
+		<#elseif addressList??>	
+			
+			
+		<div id="main-container">
+						<#list addressList as addrAdmin>
+						<div class="panel card container-item mb-2">
+							<div class="panel-body">
+								<div class="panel-body pl-2 pr-2 pb-2">
+														
+									<input type="hidden" name="address[${addrAdmin?index}].addId"  id= "addId${addrAdmin?index}" value="${addrAdmin.addId!''}">
+										
+									<div class="flex flex-row gap-8">
+										<div class="col-sm-6">
+											<label class="block mt-2 text-md font-semibold">Street</label>
+													<input type="text" id="street" 
+														value="${addrAdmin.addStreet!''}" name="address[${addrAdmin?index}].addStreet"
+															class="form-control" />
+													<span id="street_error"></span> 
+										</div>
+										<div class="col-sm-6">
+											<label class="block mt-2 mt-4 text-md font-semibold">Pincode</label>
+													 <input type="number" id="pincode${addrAdmin?index}"
+												value="${addrAdmin.addPincode!''}"  name="address[${addrAdmin?index}].addPincode"
+												class="form-control" />
+												<span id="pincode_error"></span> 										
+										</div>
+									</div>
+										
+										<div class="flex flex-row gap-8">
+										<div class="w-full">
+											<label
+												class="block mt-2 text-gray-700 dark:text-gray-400 font-semibold col-sm-6">City
+												<select id="city${addrAdmin?index}" name="address[${addrAdmin?index}].addCity"
+												class="form-control" style="height:auto">
+													<option value="Select your city">Select your city</option>
+													<option value="Ahmedabad">Ahmedabad</option>
+													<option value="Rajkot">Rajkot</option>
+													<option value="Surat">Surat</option>
+													<option value="Junagadh">Junagadh</option>
+													<option value="Gandhinagar">Gandhinagar</option>
+											</select> <span id="city_error"></span>
+											</label>
+										</div>
+										
+										<div class="w-full">
+											<label
+												class="block mt-2 text-gray-700 dark:text-gray-400 font-semibold col-sm-6">State
+												<select id="state${addrAdmin?index}" name="address[${addrAdmin?index}].addState"
+												class="form-control" style="height:auto">
+													<option value="Select your state">Select your state</option>
+													<option value="Gujarat">Gujarat</option>
+													<option value="Maharashtra">Maharashtra</option>
+													<option value="Rajsthan">Rajsthan</option>
+													<option value="Goa">Goa</option>
+													<option value="Punjab">Punjab</option>
+											</select> <span id="state_error"></span>
+											</label>
+										</div>
+									</div>
 
-												<div class="col-sm-6">
-													<div class="form-group">
-														<label class="control-label" for="city_0">City</label> <select
-															class="form-control" name="address[${addr?index}].addCity" id="city${addr?index}"
-															style="height: auto;">
-															<option value="0">Select City</option>
-															<option value="Ahemdabad">Ahemdabad</option>
-															<option value="Junagadh">Junagadh</option>
-															<option value="Mumbai">Mumbai</option>
-															<option value="Surat">Surat</option>
-															<option value="Vadodara">Vadodara</option>
-														</select> <span id="city_error"></span>
-													</div>
-												</div>
-
-
-												<div class="col-sm-6">
-													<div class="form-group">
-														<label class="control-label" for="state_0">State</label> <select
-															class="form-control" name="address[${addr?index}].addState" id="state${addr?index}"
-															style="height: auto;">
-															<option value="0">Select State</option>
-															<option value="Gujarat">Gujarat</option>
-															<option value="Maharashtra">Maharashtra</option>
-															<option value="Goa">Goa</option>
-															<option value="Punjab">Punjab</option>
-															<option value="Assam">Assam</option>
-														</select> <span id="state_error"></span>
-													</div>
-												</div>
-											</div>
-
-
-											<div class="row">
+							
+										<div class="row">
 												<div class="col-sm-12">
 													<div>
 														<a href="javascript:void(0)"
@@ -297,39 +370,25 @@
 							<#--started-->	
 								
 							<div id="main-container">
-							
 						<div class="panel card container-item mb-2">
 							<div class="panel-body">
 								<div class="panel-body pl-2 pr-2 pb-2">
-									<div class="flex flex-row gap-8">
-										<div class="col-sm-4">
-											<label class="block mt-2 text-md font-semibold">
-												<span class="text-gray-700 dark:text-gray-400 col-sm-4">Street</span>
-										<input type="text"  id="street" value="${street!""}" class="form-control form-control-user" />
-										<span id="street_error"></span> </label>
-										</div>
-									</div>	
 									
 									<div class="flex flex-row gap-8">
-										<div class="col-sm-4">
-											<label class="block">
-												<span class="text-gray-700 dark:text-gray-400 col-sm-4">Landmark</span>
-										<input type="text"  id="landmark" value="${landmark!""}" class="form-control form-control-user" />
-										<span id="landmark_error"></span> </label>
+										<div class="col-sm-6">
+											<label class="block mt-2 text-md font-semibold">Street</label>
+											<input type="text"  id="street" value="" class="form-control" placeholder="Street"/>
+											<span id="street_error"></span> 
 										</div>
-									</div>	
-									
-									<div class="flex flex-row gap-8">
-										
-										<div class="col-sm-4">
-											<label class="block mt-2 mt-4 text-md font-semibold">
-												<span class="text-gray-700 dark:text-gray-400">Pin
-													Code</span> <input type="number" id="pincode"
-												value="${pin!""}"
-												class="form-control form-control-user"
+										<div class="col-sm-6">
+											<label class="block mt-2 mt-4 text-md font-semibold">Pincode</label>
+												<input type="number" id="pincode"
+												value=""
+												class="form-control"
 												placeholder="Pincode" /> <span id="pincode_error"></span>
-											</label>
 										</div>
+									</div>	
+																	
 									
 									<div class="flex flex-row gap-8">
 										<div class="w-full ">
@@ -361,8 +420,6 @@
 										</div>
 									</div>
 
-									
-										
 										<div class="row">
 												<div class="col-sm-12">
 													<div>
@@ -379,10 +436,6 @@
 
 						</div>
 					
-				</div>
-
-
-			
 
 					<div>
 						<a class="btn btn-success btn-sm" id="add-more" href="javascript:;" role="button"><i class="fa fa-plus"></i>
@@ -390,9 +443,9 @@
 							</div>
 							<#--end-->
 							</#if>
-				</div>
+					</div>
 			</div>		
-				 	<#if name??>
+				<#if urlValue??>
 					<div class="row btn-margin form-row">
 
 						<div class="col-sm-1  submit_btn">
@@ -406,7 +459,7 @@
 								class="btn btn-default btn-primary cancel">Cancel</a>
 						</div>
 					</div>
-					<#else>
+					<#else>					
 					<div class="row btn-margin form-row">
 
 						<div class="col-sm-1  submit_btn">
@@ -451,9 +504,8 @@
 	<script type="text/javascript" src="resources/js/customValidation.js"></script>
 	<script>
 		$(document).ready(function(){
-			alert("js called");
 				
-						<#if userDetails??>		
+				<#if userDetails??>	
 						$("input[name=userGender][value=${userDetails.userGender}]").prop("checked",true);	
 					
 					<#list userDetails.userHobby?split(",") as hobby>
@@ -473,10 +525,11 @@
 				</#if>
 						
 						
-						<#if adminDetails??>		
-						$("input[name=userGender][value=${adminDetails.userGender}]").prop("checked",true);	
+			<#if adminDetails??>
+				<#list adminDetails as item>	
+						$("input[name=userGender][value=${item.userGender}]").prop("checked",true);	
 					
-					<#list adminDetails.userHobby?split(",") as hobby>
+					<#list item.userHobby?split(",") as hobby>
 						<#if hobby=="Sports">
 							$("input[name=userHobby][value=${hobby}]").prop("checked",true);
 						</#if>
@@ -489,8 +542,9 @@
 						<#if hobby=="Dance">
 							$("input[name=userHobby][value=${hobby}]").prop("checked",true);
 						</#if>
-						</#list>
-				</#if>
+					</#list>
+				</#list>
+			</#if>
 				
 					});	
 		</script>
@@ -531,40 +585,45 @@
 								});
 							});
 							
-							<#if addressList??>
-					<#list addressList as addr>
+				<#if userDetails??>
+					<#list userDetails.address![] as addr>
 							$("#state${addr?index} option[value=${addr.addState}]").attr('selected', 'selected');
 							$("#city${addr?index} option[value=${addr.addCity}]").attr('selected', 'selected');
 					</#list>
-					<#else>
+					<#elseif addressList??>
+					<#list addressList as addrAdmin>
+							$("#state${addrAdmin?index} option[value=${addrAdmin.addState}]").attr('selected', 'selected');
+							$("#city${addrAdmin?index} option[value=${addrAdmin.addCity}]").attr('selected', 'selected');
+					</#list>
+					
+				<#else>
 							
-							$("#register_button").on("click",function(){
+				$("#register_button").on("click",function(){
 
  				var counter=$(".panel .panel-body .panel-body").length;	
 				for(var i=0;i<counter;i++){
-					$(".panel .panel-body .panel-body label input[type=text]").eq(i).attr("name","address["+i+"].addStreet");
-					$(".panel .panel-body .panel-body label input[type=text]").eq(i).attr("name","address["+i+"].addLandmark");
-					$('.panel .panel-body .panel-body .flex .col-sm-4 .block option:contains("Ahmedabad")').parent().eq(i).attr("name","address["+i+"].addCity");
-					$('.panel .panel-body .panel-body .flex .col-sm-4 .block option:contains("Gujarat")').parent().eq(i).attr("name","address["+i+"].addState");
-					$(".panel .panel-body .panel-body .flex label input[type=number]").eq(i).attr("name","address["+i+"].addPincode");			
+					$(".panel .panel-body .panel-body .flex .col-sm-6  input[type=text]").eq(i).attr("name","address["+i+"].addStreet");
+					$(".panel .panel-body .panel-body .flex .col-sm-6  input[type=number]").eq(i).attr("name","address["+i+"].addPincode");			
+					$('.panel .panel-body .panel-body .flex .w-full .block option:contains("Ahmedabad")').parent().eq(i).attr("name","address["+i+"].addCity");
+					$('.panel .panel-body .panel-body .flex .w-full .block option:contains("Gujarat")').parent().eq(i).attr("name","address["+i+"].addState");
 				}		
 		});
 		</#if>
 
-				});
+	});
 	</script>
 	<script>
 		$(document).ready(function() {	
 		
 		var parsed = new URL(location);
-		var uname = parsed.searchParams.get("name");
+		var uname = parsed.searchParams.get("urlValue");
 		if (uname === 'ADD') {
 			$(".btn_hide").hide();
 			$(".header_tag").text("Add User");
 			$(".register_btn").prop("value", "Add User");
 			$("#image_preview").hide();
-			$(".cancel").attr("href", "AdminHomePage")
-			//$("#register_btn").attr("action","addUser?name=ADD")
+			$(".cancel").attr("href", "adminHome")
+			$("#registration_form").attr("action","addUser?urlValue=ADD")
 
 		} 
 		
@@ -575,7 +634,7 @@
 			$("#mail").attr("readonly", "readonly");
 			$("#pwd").attr("readonly", "readonly");
 			$("#cpwd").attr("readonly", "readonly");
-			$("#registration_form").attr("action", "UserEdit?name=adminEdit");
+			$("#registration_form").attr("action", "UserEdit?urlValue=adminEdit");
 			$("#image_preview").css({
 				"display" : "block",
 				"max-width" : "170px",
@@ -586,11 +645,10 @@
 
  				var counter=$(".panel .panel-body .panel-body").length;	
 				for(var i=0;i<counter;i++){
-					$(".panel .panel-body .panel-body label input[type=text]").eq(i).attr("name","address["+i+"].addStreet");
-					$(".panel .panel-body .panel-body label input[type=text]").eq(i).attr("name","address["+i+"].addLandmark");
-					$('.panel .panel-body .panel-body .flex .col-sm-4 .block option:contains("Ahmedabad")').parent().eq(i).attr("name","address["+i+"].addCity");
-					$('.panel .panel-body .panel-body .flex .col-sm-4 .block option:contains("Gujarat")').parent().eq(i).attr("name","address["+i+"].addState");
-					$(".panel .panel-body .panel-body .flex label input[type=number]").eq(i).attr("name","address["+i+"].addPincode");			
+					$(".panel .panel-body .panel-body .flex .col-sm-6  input[type=text]").eq(i).attr("name","address["+i+"].addStreet");
+					$(".panel .panel-body .panel-body .flex .col-sm-6  input[type=number]").eq(i).attr("name","address["+i+"].addPincode");			
+					$('.panel .panel-body .panel-body .flex .w-full .block option:contains("Ahmedabad")').parent().eq(i).attr("name","address["+i+"].addCity");
+					$('.panel .panel-body .panel-body .flex .w-full .block option:contains("Gujarat")').parent().eq(i).attr("name","address["+i+"].addState");
 				}		
 		});
 		} 
@@ -600,7 +658,7 @@
 			$(".header_tag").text("Update Profile");
 			$(".register_btn").prop("value", "Update");
 			$("#mail").attr("readonly", "readonly");
-			$("#registration_form").attr("action", "UserEdit?name=userEdit");
+			$("#registration_form").attr("action", "UserEdit?urlValue=userEdit");
 			$("#pwd").attr("readonly", "true");
 			$("#cpwd").attr("readonly", "true");
 			$("#image_preview").css({
@@ -613,11 +671,10 @@
 
  				var counter=$(".panel .panel-body .panel-body").length;	
 				for(var i=0;i<counter;i++){
-					$(".panel .panel-body .panel-body label input[type=text]").eq(i).attr("name","address["+i+"].addStreet");
-					$(".panel .panel-body .panel-body label input[type=text]").eq(i).attr("name","address["+i+"].addLandmark");
-					$('.panel .panel-body .panel-body .flex .col-sm-4 .block option:contains("Ahmedabad")').parent().eq(i).attr("name","address["+i+"].addCity");
-					$('.panel .panel-body .panel-body .flex .col-sm-4 .block option:contains("Gujarat")').parent().eq(i).attr("name","address["+i+"].addState");
-					$(".panel .panel-body .panel-body .flex label input[type=number]").eq(i).attr("name","address["+i+"].addPincode");			
+					$(".panel .panel-body .panel-body .flex .col-sm-6  input[type=text]").eq(i).attr("name","address["+i+"].addStreet");
+					$(".panel .panel-body .panel-body .flex .col-sm-6  input[type=number]").eq(i).attr("name","address["+i+"].addPincode");			
+					$('.panel .panel-body .panel-body .flex .w-full .block option:contains("Ahmedabad")').parent().eq(i).attr("name","address["+i+"].addCity");
+					$('.panel .panel-body .panel-body .flex .w-full .block option:contains("Gujarat")').parent().eq(i).attr("name","address["+i+"].addState");	
 				}		
 		});
 
@@ -627,7 +684,7 @@
 			$(".register_btn").prop("value", "Update");
 			$("#mail").attr("readonly", "readonly");
 			$("#pwd").attr("readonly", "true");
-			$("#registration_form").attr("action", "UserEdit?name=admin");
+			$("#registration_form").attr("action", "UserEdit?urlValue=admin");
 			$("#cpwd").attr("readonly", "true");
 			$("#image_preview").css({
 				"display" : "block",
@@ -639,11 +696,10 @@
 
  				var counter=$(".panel .panel-body .panel-body").length;	
 				for(var i=0;i<counter;i++){
-					$(".panel .panel-body .panel-body label input[type=text]").eq(i).attr("name","address["+i+"].addStreet");
-					$(".panel .panel-body .panel-body label input[type=text]").eq(i).attr("name","address["+i+"].addLandmark");
-					$('.panel .panel-body .panel-body .flex .col-sm-4 .block option:contains("Ahmedabad")').parent().eq(i).attr("name","address["+i+"].addCity");
-					$('.panel .panel-body .panel-body .flex .col-sm-4 .block option:contains("Gujarat")').parent().eq(i).attr("name","address["+i+"].addState");
-					$(".panel .panel-body .panel-body .flex label input[type=number]").eq(i).attr("name","address["+i+"].addPincode");			
+					$(".panel .panel-body .panel-body .flex .col-sm-6  input[type=text]").eq(i).attr("name","address["+i+"].addStreet");
+					$(".panel .panel-body .panel-body .flex .col-sm-6  input[type=number]").eq(i).attr("name","address["+i+"].addPincode");			
+					$('.panel .panel-body .panel-body .flex .w-full .block option:contains("Ahmedabad")').parent().eq(i).attr("name","address["+i+"].addCity");
+					$('.panel .panel-body .panel-body .flex .w-full .block option:contains("Gujarat")').parent().eq(i).attr("name","address["+i+"].addState");
 				}		
 		});
 		}

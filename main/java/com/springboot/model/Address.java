@@ -14,6 +14,7 @@ public class Address {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+
 	@Column(name = "address_id")
 	private int addId;
 
@@ -23,8 +24,6 @@ public class Address {
 
 	@Column(name = "street")
 	private String addStreet;
-	@Column(name = "landmark")
-	private String addLandmark;
 	@Column(name = "pincode")
 	private String addPincode;
 	@Column(name = "city")
@@ -34,8 +33,6 @@ public class Address {
 
 	@Transient
 	private String addressId;
-	@Transient
-	private String removeAddressId;
 
 	public int getAddId() {
 		return addId;
@@ -69,14 +66,6 @@ public class Address {
 		this.addStreet = addStreet;
 	}
 
-	public String getAddLandmark() {
-		return addLandmark;
-	}
-
-	public void setAddLandmark(String addLandmark) {
-		this.addLandmark = addLandmark;
-	}
-
 	public String getAddCity() {
 		return addCity;
 	}
@@ -93,14 +82,6 @@ public class Address {
 		this.addState = addState;
 	}
 
-	public String getRemoveAddressId() {
-		return removeAddressId;
-	}
-
-	public void setRemoveAddressId(String removeAddressId) {
-		this.removeAddressId = removeAddressId;
-	}
-
 	public String getAddressId() {
 		return addressId;
 	}
@@ -115,23 +96,20 @@ public class Address {
 	}
 
 	public Address(int addId, User user, String addPincode, String addStreet, String addLandmark, String addCity,
-			String addState, String removeAddressId) {
+			String addState) {
 		super();
 		this.addId = addId;
 		this.user = user;
 		this.addPincode = addPincode;
 		this.addStreet = addStreet;
-		this.addLandmark = addLandmark;
 		this.addCity = addCity;
 		this.addState = addState;
-		this.removeAddressId = removeAddressId;
 	}
 
 	@Override
 	public String toString() {
-		return "Address [addId=" + addId + ", addPincode=" + addPincode + ", addStreet=" + addStreet + ", addLandmark="
-				+ addLandmark + ", addCity=" + addCity + ", addState=" + addState + ", removeAddressId="
-				+ removeAddressId + "]";
+		return "Address [addId=" + addId + ", addPincode=" + addPincode + ", addStreet=" + addStreet + ", addCity="
+				+ addCity + ", addState=" + addState + "]";
 	}
 
 }
